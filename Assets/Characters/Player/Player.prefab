@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 3
   m_Sprite: {fileID: -1656411074, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: 0}
+  m_Actions: {fileID: -944628639613478452, guid: 05a12ae8028ba09419ffd93e1a3020f5, type: 3}
   m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &944388597218742049
@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a20f84e96cf8c4b81b43f6463236af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  collisionOffset: 0.05
+  moveSpeed: 1.2
+  collisionOffset: 0.02
   movementFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -148,7 +148,11 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  isDefeated: 0
+  deadSprite: {fileID: -491567066, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
   swordAttack: {fileID: 2630707568524994737}
+  healthBar: {fileID: 0}
+  health: 5
 --- !u!50 &8058950116114834094
 Rigidbody2D:
   serializedVersion: 4
@@ -183,7 +187,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0039558876, y: -0.15851623}
+  m_Offset: {x: 0.0048398543, y: -0.15851623}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -194,7 +198,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.076158404, y: 0.023535907}
+  m_Size: {x: 0.0673188, y: 0.023535907}
   m_EdgeRadius: 0
 --- !u!95 &8964655473198293408
 Animator:
@@ -227,6 +231,7 @@ GameObject:
   - component: {fileID: 1835660420697321289}
   - component: {fileID: 5687608445605301653}
   - component: {fileID: 2630707568524994737}
+  - component: {fileID: 5732043213268809537}
   m_Layer: 0
   m_Name: SwordHitbox
   m_TagString: Untagged
@@ -242,7 +247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4040704342349076652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1065, y: -0.0735, z: 0}
+  m_LocalPosition: {x: 0.094, y: -0.086, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -288,3 +293,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordCollider: {fileID: 5687608445605301653}
+--- !u!50 &5732043213268809537
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040704342349076652}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

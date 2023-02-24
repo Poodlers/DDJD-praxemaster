@@ -30,6 +30,23 @@ public class SwordAttack : MonoBehaviour
 
 
     }
+    public void AttackUp()
+    {
+        swordCollider.enabled = true;
+        transform.Rotate(0, 0, 90);
+        transform.localPosition = new Vector2(0,
+        0);
+
+
+    }
+
+    public void AttackDown()
+    {
+        swordCollider.enabled = true;
+        transform.Rotate(0, 0, 90);
+        transform.localPosition = new Vector2(0,
+        -0.16f);
+    }
 
     public void StopAttack()
     {

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5102506937184626802}
   - component: {fileID: 3269007335387533602}
   - component: {fileID: 4585630633669664720}
-  - component: {fileID: 2376693688458765140}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -123,8 +122,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0036616325, y: -0.018308133}
-  m_Size: {x: 0.15156537, y: 0.15156537}
+  m_Offset: {x: -0.00042258203, y: -0.022392347}
+  m_Size: {x: 0.14339694, y: 0.14339694}
   m_Direction: 0
 --- !u!114 &3269007335387533602
 MonoBehaviour:
@@ -138,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c120dfabd03b24bae9efb19b7360b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 2
 --- !u!95 &4585630633669664720
 Animator:
   serializedVersion: 5
@@ -159,19 +158,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!70 &2376693688458765140
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3040320105041018208}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0053352416, y: -0.018376946}
-  m_Size: {x: 0.15282905, y: 0.15282905}
-  m_Direction: 0

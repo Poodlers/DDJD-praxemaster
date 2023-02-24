@@ -39,6 +39,8 @@
      <Compile Include="Assets\EnemyController.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\SwordAttack.cs" />
+     <Compile Include="Assets\HealthBar.cs" />
+     <Compile Include="Assets\RandomEnemySpawner.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.18f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

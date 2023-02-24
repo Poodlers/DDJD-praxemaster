@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,24 +13,101 @@ public class PlayerController : MonoBehaviour
     Vector2 movementInput;
     Rigidbody2D rb;
 
+    public const float invincibilityDurationSeconds = 1.5f;
+    float invincibilityDeltaTime = 0.15f;
+
+    bool isInvincible = false;
+    public bool isDefeated = false;
+    public Sprite deadSprite;
     public SwordAttack swordAttack;
     SpriteRenderer spriteRenderer;
 
+    private GameObject model;
     Animator animator;
-
+    public HealthBar healthBar;
     bool canMove = true;
+    public int health = 5;
+    public int Health
+    {
+        set
+        {
+            health = value;
+            if (health <= 0)
+            {
+                Defeated();
+            }
+            else
+            {
+                Damaged();
 
+                StartCoroutine(BecomeTemporarilyInvincible());
+            }
+        }
+        get
+        {
+            return health;
+        }
+    }
 
-
-    // Start is called before the first frame update
     void Start()
     {
+        healthBar.SetMaxHealth(health);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        model = GetComponentInChildren<SpriteRenderer>().gameObject;
 
     }
+    private void Defeated()
+    {
+        animator.SetTrigger("Defeated");
+        animator.enabled = false;
+        spriteRenderer.sprite = deadSprite;
+        canMove = false;
+        isDefeated = true;
+    }
+    private void ScaleModelTo(Vector3 scale)
+    {
+        model.transform.localScale = scale;
+    }
+    private IEnumerator BecomeTemporarilyInvincible()
+    {
+        Debug.Log("Player turned invincible!");
+        isInvincible = true;
 
+        for (float i = 0; i < invincibilityDurationSeconds; i += invincibilityDeltaTime)
+        {
+            // Alternate between 0 and 1 scale to simulate flashing
+            if (model.transform.localScale == Vector3.one)
+            {
+                ScaleModelTo(Vector3.zero);
+            }
+            else
+            {
+                ScaleModelTo(Vector3.one);
+            }
+            yield return new WaitForSeconds(invincibilityDeltaTime);
+        }
+
+        Debug.Log("Player is no longer invincible!");
+        ScaleModelTo(Vector3.one);
+        isInvincible = false;
+    }
+
+
+    // Start is called before the first frame update
+
+
+    public void Damaged()
+    {
+
+        Debug.Log("Player Damaged");
+    }
+    public void PlayerDeath()
+    {
+        spriteRenderer.sprite = deadSprite;
+        canMove = false;
+    }
     private bool TryMove(Vector2 direction)
     {
 
@@ -70,12 +148,32 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            animator.SetBool("isMoving", success);
+            if (movementInput.x != 0)
+            {
+                animator.SetBool("isMovingSideways", success);
+                animator.SetBool("isMovingUp", false);
+                animator.SetBool("isMovingDown", false);
+            }
+            else if (movementInput.y < 0)
+            {
+                animator.SetBool("isMovingDown", success);
+                animator.SetBool("isMovingUp", false);
+                animator.SetBool("isMovingSideways", false);
+            }
+            else
+            {
+                animator.SetBool("isMovingUp", success);
+                animator.SetBool("isMovingDown", false);
+                animator.SetBool("isMovingSideways", false);
+            }
+
 
         }
         else
         {
-            animator.SetBool("isMoving", false);
+            animator.SetBool("isMovingSideways", false);
+            animator.SetBool("isMovingUp", false);
+            animator.SetBool("isMovingDown", false);
         }
 
         // Set direction of sprite to movement direction
@@ -102,7 +200,15 @@ public class PlayerController : MonoBehaviour
     public void SwordAttack()
     {
         LockMovement();
-        if (spriteRenderer.flipX)
+        if (animator.GetBool("isMovingUp"))
+        {
+            swordAttack.AttackUp();
+        }
+        else if (animator.GetBool("isMovingDown"))
+        {
+            swordAttack.AttackDown();
+        }
+        else if (spriteRenderer.flipX)
         {
             swordAttack.AttackLeft();
         }
@@ -124,5 +230,30 @@ public class PlayerController : MonoBehaviour
     {
         canMove = true;
     }
+
+    public void TakeDamage(int damage)
+    {
+
+        Health -= damage;
+        healthBar.SetHealth(health);
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Player collided with " + collision.gameObject.name);
+        if (isInvincible) return;
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
+
+    }
+
 
 }
