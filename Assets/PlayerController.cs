@@ -7,6 +7,12 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1f;
+    const int frameRate = 50;
+    int framesM2_Count = 0;
+    public int M2_cooldown = 3;
+
+    bool canDoM2 = true;
+
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
@@ -23,7 +29,6 @@ public class PlayerController : MonoBehaviour
     public Sprite deadSprite;
     public SwordAttack swordAttack;
     SpriteRenderer spriteRenderer;
-
     SpriteRenderer colherSprite;
     private GameObject model;
     Animator animator;
@@ -66,6 +71,8 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("Defeated");
         animator.enabled = false;
+        swordAnimator.enabled = false;
+        colherSprite.transform.Rotate(0, 0, -90);
         spriteRenderer.sprite = deadSprite;
         canMove = false;
         isDefeated = true;
@@ -136,6 +143,16 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canDoM2)
+        {
+            framesM2_Count++;
+            if (framesM2_Count >= frameRate * M2_cooldown)
+            {
+                canDoM2 = true;
+                framesM2_Count = 0;
+            }
+        }
+
         if (!canMove) return;
         //if movementInput is not zero, then move the player
         if (movementInput != Vector2.zero)
@@ -195,7 +212,7 @@ public class PlayerController : MonoBehaviour
         // Set direction of sprite to movement direction
         spriteRenderer.flipX = movementInput.x < 0;
         colherSprite.flipX = spriteRenderer.flipX;
-        colherSprite.transform.position = new Vector3(transform.position.x * (spriteRenderer.flipX ? -1 : 1), transform.position.y, transform.position.z);
+        colherSprite.transform.localPosition = spriteRenderer.flipX ? new Vector3(-0.075f, 0, 0) : new Vector3(0.075f, 0, 0);
 
     }
 
@@ -207,6 +224,13 @@ public class PlayerController : MonoBehaviour
     void OnFire(InputValue value)
     {
         swordAnimator.SetTrigger("swordAttack");
+    }
+
+    void OnRightClick(InputValue value)
+    {
+
+        if (canDoM2)
+            swordAnimator.SetBool("spinAttack", true);
     }
     public void LockMovement()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwordAttack : MonoBehaviour
 {
 
-    public Collider2D swordCollider;
+    public BoxCollider2D swordCollider;
     SpriteRenderer spriteRenderer;
 
     PlayerController playerController;
@@ -13,12 +13,15 @@ public class SwordAttack : MonoBehaviour
     Animator animator;
     Vector2 rightAttackOffset;
 
+    Vector2 regularBoxColliderSize;
+
     Vector2 leftAttackOffset;
 
     private void Start()
     {
 
         rightAttackOffset = transform.position;
+        regularBoxColliderSize = swordCollider.size;
         leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -58,10 +61,22 @@ public class SwordAttack : MonoBehaviour
         -0.16f);
     }
 
+    public void SpinAttack()
+    {
+        swordCollider.enabled = true;
+        swordCollider.size = new Vector2(swordCollider.size.x * 2, swordCollider.size.y * 2);
+        swordCollider.transform.localPosition = new Vector2(-0.01f, 0);
+        spriteRenderer.transform.localPosition = new Vector2(-0.01f, 0);
+        spriteRenderer.transform.localScale = new Vector2(1.5f, 1.5f);
+
+    }
+
     public void StopAttack()
     {
         swordCollider.enabled = false;
         swordCollider.transform.rotation = Quaternion.identity;
+        swordCollider.size = regularBoxColliderSize;
+        spriteRenderer.transform.localScale = new Vector2(1, 1);
         if (spriteRenderer.flipX)
             swordCollider.transform.localPosition = rightAttackOffset;
         else
@@ -71,7 +86,12 @@ public class SwordAttack : MonoBehaviour
     public void StartAttack()
     {
         playerController.LockMovement();
-        if (animator.GetBool("isMovingUp"))
+        if (animator.GetBool("spinAttack"))
+        {
+            SpinAttack();
+            animator.SetBool("spinAttack", false);
+        }
+        else if (animator.GetBool("isMovingUp"))
         {
             AttackUp();
         }
