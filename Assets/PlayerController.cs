@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     Vector2 movementInput;
     Rigidbody2D rb;
 
+    Animator swordAnimator;
+
     public const float invincibilityDurationSeconds = 1.5f;
     float invincibilityDeltaTime = 0.15f;
 
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public SwordAttack swordAttack;
     SpriteRenderer spriteRenderer;
 
+    SpriteRenderer colherSprite;
     private GameObject model;
     Animator animator;
     public HealthBar healthBar;
@@ -56,7 +59,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         model = GetComponentInChildren<SpriteRenderer>().gameObject;
-
+        swordAnimator = swordAttack.GetComponent<Animator>();
+        colherSprite = swordAttack.GetComponent<SpriteRenderer>();
     }
     private void Defeated()
     {
@@ -151,20 +155,29 @@ public class PlayerController : MonoBehaviour
             if (movementInput.x != 0)
             {
                 animator.SetBool("isMovingSideways", success);
+                swordAnimator.SetBool("isMovingSideways", success);
                 animator.SetBool("isMovingUp", false);
+                swordAnimator.SetBool("isMovingUp", false);
                 animator.SetBool("isMovingDown", false);
+                swordAnimator.SetBool("isMovingDown", false);
             }
             else if (movementInput.y < 0)
             {
                 animator.SetBool("isMovingDown", success);
+                swordAnimator.SetBool("isMovingDown", success);
                 animator.SetBool("isMovingUp", false);
+                swordAnimator.SetBool("isMovingUp", false);
                 animator.SetBool("isMovingSideways", false);
+                swordAnimator.SetBool("isMovingSideways", false);
             }
             else
             {
                 animator.SetBool("isMovingUp", success);
+                swordAnimator.SetBool("isMovingUp", success);
                 animator.SetBool("isMovingDown", false);
+                swordAnimator.SetBool("isMovingDown", false);
                 animator.SetBool("isMovingSideways", false);
+                swordAnimator.SetBool("isMovingSideways", false);
             }
 
 
@@ -172,59 +185,35 @@ public class PlayerController : MonoBehaviour
         else
         {
             animator.SetBool("isMovingSideways", false);
+            swordAnimator.SetBool("isMovingSideways", false);
             animator.SetBool("isMovingUp", false);
+            swordAnimator.SetBool("isMovingUp", false);
             animator.SetBool("isMovingDown", false);
+            swordAnimator.SetBool("isMovingDown", false);
         }
 
         // Set direction of sprite to movement direction
         spriteRenderer.flipX = movementInput.x < 0;
-
+        colherSprite.flipX = spriteRenderer.flipX;
+        colherSprite.transform.position = new Vector3(transform.position.x * (spriteRenderer.flipX ? -1 : 1), transform.position.y, transform.position.z);
 
     }
 
     void OnMove(InputValue value)
     {
         movementInput = value.Get<Vector2>();
-
     }
 
     void OnFire(InputValue value)
     {
-        animator.SetTrigger("swordAttack");
+        swordAnimator.SetTrigger("swordAttack");
     }
     public void LockMovement()
     {
         canMove = false;
     }
 
-    public void SwordAttack()
-    {
-        LockMovement();
-        if (animator.GetBool("isMovingUp"))
-        {
-            swordAttack.AttackUp();
-        }
-        else if (animator.GetBool("isMovingDown"))
-        {
-            swordAttack.AttackDown();
-        }
-        else if (spriteRenderer.flipX)
-        {
-            swordAttack.AttackLeft();
-        }
-        else
-        {
-            swordAttack.AttackRight();
-        }
 
-
-    }
-
-    public void EndSwordAttack()
-    {
-        swordAttack.StopAttack();
-        unLockMovement();
-    }
 
     public void unLockMovement()
     {

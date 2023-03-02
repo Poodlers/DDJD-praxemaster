@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: player_attack
+  m_Name: attack_down
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,13 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 600439555, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
+      value: {fileID: -419516367, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
     - time: 0.1
-      value: {fileID: 1866433675, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
+      value: {fileID: -133344022, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
     - time: 0.2
-      value: {fileID: 1290752664, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
+      value: {fileID: 466813841, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
     - time: 0.3
-      value: {fileID: -528727652, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
+      value: {fileID: -965779364, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,10 +46,10 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 600439555, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
-    - {fileID: 1866433675, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
-    - {fileID: 1290752664, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
-    - {fileID: -528727652, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
+    - {fileID: -419516367, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
+    - {fileID: -133344022, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
+    - {fileID: 466813841, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
+    - {fileID: -965779364, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -76,13 +76,13 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: SwordAttack
+    functionName: StartAttack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.4
+  - time: 0.3
     functionName: EndSwordAttack
     data: 
     objectReferenceParameter: {fileID: 0}

@@ -6,12 +6,23 @@ public class SwordAttack : MonoBehaviour
 {
 
     public Collider2D swordCollider;
+    SpriteRenderer spriteRenderer;
+
+    PlayerController playerController;
+
+    Animator animator;
     Vector2 rightAttackOffset;
+
+    Vector2 leftAttackOffset;
 
     private void Start()
     {
 
         rightAttackOffset = transform.position;
+        leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        playerController = GetComponentInParent<PlayerController>();
     }
 
 
@@ -25,17 +36,16 @@ public class SwordAttack : MonoBehaviour
     public void AttackLeft()
     {
         swordCollider.enabled = true;
-        transform.localPosition = new Vector2(-rightAttackOffset.x,
-        rightAttackOffset.y);
+        transform.localPosition = leftAttackOffset;
 
 
     }
     public void AttackUp()
     {
         swordCollider.enabled = true;
-        transform.Rotate(0, 0, 90);
-        transform.localPosition = new Vector2(0,
-        0);
+        swordCollider.transform.Rotate(0, 0, 90);
+        swordCollider.transform.localPosition = new Vector2(0.01f, 0.066f);
+        spriteRenderer.transform.localPosition = new Vector2(0.01f, 0.066f);
 
 
     }
@@ -43,15 +53,48 @@ public class SwordAttack : MonoBehaviour
     public void AttackDown()
     {
         swordCollider.enabled = true;
-        transform.Rotate(0, 0, 90);
-        transform.localPosition = new Vector2(0,
+        swordCollider.transform.Rotate(0, 0, 90);
+        swordCollider.transform.localPosition = new Vector2(0,
         -0.16f);
     }
 
     public void StopAttack()
     {
         swordCollider.enabled = false;
+        swordCollider.transform.rotation = Quaternion.identity;
+        if (spriteRenderer.flipX)
+            swordCollider.transform.localPosition = rightAttackOffset;
+        else
+            swordCollider.transform.localPosition = leftAttackOffset;
+    }
 
+    public void StartAttack()
+    {
+        playerController.LockMovement();
+        if (animator.GetBool("isMovingUp"))
+        {
+            AttackUp();
+        }
+        else if (animator.GetBool("isMovingDown"))
+        {
+            AttackDown();
+        }
+        else if (spriteRenderer.flipX)
+        {
+            AttackLeft();
+        }
+        else
+        {
+            AttackRight();
+        }
+
+
+    }
+
+    public void EndSwordAttack()
+    {
+        StopAttack();
+        playerController.unLockMovement();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
