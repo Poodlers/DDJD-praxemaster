@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour
     public const float invincibilityDurationSeconds = 1.5f;
     float invincibilityDeltaTime = 0.15f;
 
+    // todo - tidy up
+    public bool isRanged = true;
+    //
+
     bool isInvincible = false;
     public bool isDefeated = false;
     public Sprite deadSprite;
@@ -206,7 +210,11 @@ public class PlayerController : MonoBehaviour
 
     void OnFire(InputValue value)
     {
-        swordAnimator.SetTrigger("swordAttack");
+        if (isRanged) {
+            // Instantiate();
+        } else { 
+            swordAnimator.SetTrigger("swordAttack");
+        }
     }
     public void LockMovement()
     {
