@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private GameObject model;
     Animator animator;
     public HealthBar healthBar;
+
+    public M2_cooldown m2_cooldown;
     bool canMove = true;
     public int health = 5;
     public int Health
@@ -60,6 +62,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         healthBar.SetMaxHealth(health);
+        m2_cooldown.SetMaxCooldown(M2_cooldown * frameRate);
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -146,6 +149,7 @@ public class PlayerController : MonoBehaviour
         if (!canDoM2)
         {
             framesM2_Count++;
+            m2_cooldown.SetCoolDown(framesM2_Count);
             if (framesM2_Count >= frameRate * M2_cooldown)
             {
                 canDoM2 = true;
@@ -230,7 +234,12 @@ public class PlayerController : MonoBehaviour
     {
 
         if (canDoM2)
+        {
+            canDoM2 = false;
+            m2_cooldown.SetCoolDown(framesM2_Count);
             swordAnimator.SetBool("spinAttack", true);
+        }
+
     }
     public void LockMovement()
     {
