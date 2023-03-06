@@ -36,6 +36,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\CoffeeGun.cs" />
+     <Compile Include="Assets\PlayerWeaponManager.cs" />
      <Compile Include="Assets\EnemyController.cs" />
      <Compile Include="Assets\RandomEnemySpawner.cs" />
      <Compile Include="Assets\FinoCollectible.cs" />
@@ -43,8 +45,9 @@
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\SwordAttack.cs" />
      <Compile Include="Assets\enemyRemoval.cs" />
-     <Compile Include="Assets\HealthBar.cs" />
      <Compile Include="Assets\M2_cooldown.cs" />
+     <Compile Include="Assets\ProjectileBehavior.cs" />
+     <Compile Include="Assets\HealthBar.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

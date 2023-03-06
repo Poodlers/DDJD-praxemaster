@@ -1,33 +1,76 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public class SwordAttack : MonoBehaviour
 {
 
     public BoxCollider2D swordCollider;
     SpriteRenderer spriteRenderer;
-
     PlayerController playerController;
+    const int frameRate = 50;
+    int framesM2_Count = 0;
+    public int M2_cooldown = 3;
 
-    Animator animator;
+    bool canDoM2 = true;
+    Animator swordAnimator;
     Vector2 rightAttackOffset;
 
     Vector2 regularBoxColliderSize;
 
     Vector2 leftAttackOffset;
 
-    private void Start()
+    public M2_cooldown m2_cooldown;
+
+    private void Awake()
     {
 
         rightAttackOffset = transform.position;
+        m2_cooldown.SetMaxCooldown(M2_cooldown * frameRate);
         regularBoxColliderSize = swordCollider.size;
         leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        swordAnimator = GetComponent<Animator>();
         playerController = GetComponentInParent<PlayerController>();
+
     }
 
+
+
+    void FixedUpdate()
+    {
+
+        swordAnimator.SetBool("isMovingSideways", playerController.animator.GetBool("isMovingSideways"));
+        swordAnimator.SetBool("isMovingUp", playerController.animator.GetBool("isMovingUp"));
+        swordAnimator.SetBool("isMovingDown", playerController.animator.GetBool("isMovingDown"));
+        spriteRenderer.flipX = playerController.spriteRenderer.flipX;
+        transform.localPosition = spriteRenderer.flipX ? new Vector3(-0.075f, 0, 0) : new Vector3(0.075f, 0, 0);
+        if (!canDoM2)
+        {
+            framesM2_Count++;
+            m2_cooldown.SetCoolDown(framesM2_Count);
+            if (framesM2_Count >= frameRate * M2_cooldown)
+            {
+                canDoM2 = true;
+                framesM2_Count = 0;
+            }
+        }
+    }
+
+    public void OnFire()
+    {
+        swordAnimator.SetTrigger("swordAttack");
+    }
+
+    public void OnRightClick()
+    {
+        if (canDoM2)
+        {
+            canDoM2 = false;
+            m2_cooldown.SetCoolDown(framesM2_Count);
+            swordAnimator.SetBool("spinAttack", true);
+        }
+
+    }
 
     public void AttackRight()
     {
@@ -86,16 +129,16 @@ public class SwordAttack : MonoBehaviour
     public void StartAttack()
     {
         playerController.LockMovement();
-        if (animator.GetBool("spinAttack"))
+        if (swordAnimator.GetBool("spinAttack"))
         {
             SpinAttack();
-            animator.SetBool("spinAttack", false);
+            swordAnimator.SetBool("spinAttack", false);
         }
-        else if (animator.GetBool("isMovingUp"))
+        else if (swordAnimator.GetBool("isMovingUp"))
         {
             AttackUp();
         }
-        else if (animator.GetBool("isMovingDown"))
+        else if (swordAnimator.GetBool("isMovingDown"))
         {
             AttackDown();
         }
