@@ -27,6 +27,11 @@ public class ProjectileBehavior : MonoBehaviour
 
     }
 
+    void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Coffee hit " + collision.gameObject.name);
@@ -38,7 +43,9 @@ public class ProjectileBehavior : MonoBehaviour
             if (enemyController != null)
             {
                 enemyController.TakeDamage(1);
+
             }
+            Destroy(gameObject);
         }
     }
 

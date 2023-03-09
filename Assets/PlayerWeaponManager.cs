@@ -9,10 +9,12 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private CoffeeGun cofffeWeapon;
     [SerializeField] private SwordAttack colher;
 
+    M2_cooldown m2_cooldown;
     private int weaponID = 1;
 
     void Start()
     {
+        m2_cooldown = GameObject.Find("M2_Cooldown").GetComponent<M2_cooldown>();
 
     }
 
@@ -30,15 +32,15 @@ public class PlayerWeaponManager : MonoBehaviour
 
     }
 
-    public void OnRightClick()
+    public void OnRightClick(InputAction.CallbackContext context)
     {
         switch (weaponID)
         {
             case 0:
-                cofffeWeapon.OnRightClick();
+                cofffeWeapon.OnRightClick(context);
                 break;
             case 1:
-                colher.OnRightClick();
+                if (context.started) colher.OnRightClick();
                 break;
         }
     }
@@ -51,10 +53,12 @@ public class PlayerWeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             SetWeapon(0);
+            m2_cooldown.switchSprites(0);
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             SetWeapon(1);
+            m2_cooldown.switchSprites(1);
         }
 
     }

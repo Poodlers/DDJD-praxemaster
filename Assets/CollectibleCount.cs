@@ -7,8 +7,13 @@ public class CollectibleCount : MonoBehaviour
     TMPro.TMP_Text text;
     int collectibleCount = 0;
 
+    int nextUpgradeThreshold = 1;
+
+    public UpgradeMenu upgradeMenu;
+
     void Start()
     {
+
         UpdateCount();
         onEnable();
     }
@@ -20,7 +25,7 @@ public class CollectibleCount : MonoBehaviour
 
     void UpdateCount()
     {
-        text.text = $"{collectibleCount} / {FinoCollectible.totalCollectibles}";
+        text.text = $"{collectibleCount} / {nextUpgradeThreshold}";
     }
 
     void onEnable()
@@ -37,6 +42,13 @@ public class CollectibleCount : MonoBehaviour
     {
         Debug.Log("Collectible collected");
         collectibleCount++;
+
         UpdateCount();
+        if (collectibleCount == nextUpgradeThreshold)
+        {
+            upgradeMenu.PauseGame();
+            nextUpgradeThreshold += 3;
+        }
+
     }
 }

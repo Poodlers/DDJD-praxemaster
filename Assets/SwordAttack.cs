@@ -4,13 +4,16 @@ using UnityEngine;
 public class SwordAttack : MonoBehaviour
 {
 
-    public BoxCollider2D swordCollider;
-    SpriteRenderer spriteRenderer;
+    GameObject colherGFX;
+    GameObject colherCollider;
+
+    SpriteRenderer colherRenderer;
+    BoxCollider2D swordCollider;
     PlayerController playerController;
     const int frameRate = 50;
     int framesM2_Count = 0;
     public int M2_cooldown = 3;
-
+    public float spinTime = 0.5f;
     bool canDoM2 = true;
     Animator swordAnimator;
     Vector2 rightAttackOffset;
@@ -18,32 +21,48 @@ public class SwordAttack : MonoBehaviour
     Vector2 regularBoxColliderSize;
 
     Vector2 leftAttackOffset;
+    Vector3 regularScale;
 
-    public M2_cooldown m2_cooldown;
+    M2_cooldown m2_cooldown;
+
+    public UpgradeMenu upgradeMenu;
 
     private void Awake()
     {
 
+        colherGFX = GameObject.Find("ColherGFX");
+        colherRenderer = colherGFX.GetComponent<SpriteRenderer>();
+        colherCollider = GameObject.Find("ColherCollider");
+        swordCollider = colherCollider.GetComponent<BoxCollider2D>();
+        m2_cooldown = GameObject.Find("M2_Cooldown").GetComponent<M2_cooldown>();
+        regularScale = transform.localScale;
         rightAttackOffset = transform.position;
         m2_cooldown.SetMaxCooldown(M2_cooldown * frameRate);
         regularBoxColliderSize = swordCollider.size;
         leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        swordAnimator = GetComponent<Animator>();
-        playerController = GetComponentInParent<PlayerController>();
+        swordAnimator = colherGFX.GetComponent<Animator>();
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
 
     }
 
+    public void UpgradeColherRange()
+    {
 
+        transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        regularScale = transform.localScale;
+        Debug.Log("UpgradeColherRange");
+        upgradeMenu.ResumeGame();
 
+    }
     void FixedUpdate()
     {
 
         swordAnimator.SetBool("isMovingSideways", playerController.animator.GetBool("isMovingSideways"));
         swordAnimator.SetBool("isMovingUp", playerController.animator.GetBool("isMovingUp"));
         swordAnimator.SetBool("isMovingDown", playerController.animator.GetBool("isMovingDown"));
-        spriteRenderer.flipX = playerController.spriteRenderer.flipX;
-        transform.localPosition = spriteRenderer.flipX ? new Vector3(-0.075f, 0, 0) : new Vector3(0.075f, 0, 0);
+        colherRenderer.flipX = playerController.spriteRenderer.flipX;
+        if (!swordCollider.enabled) transform.localPosition = colherRenderer.flipX ? new Vector3(-0.05f, 0, 0) : new Vector3(0.05f, 0, 0);
+
         if (!canDoM2)
         {
             framesM2_Count++;
@@ -72,45 +91,40 @@ public class SwordAttack : MonoBehaviour
 
     }
 
+
     public void AttackRight()
     {
         swordCollider.enabled = true;
         transform.localPosition = rightAttackOffset;
-
     }
 
     public void AttackLeft()
     {
         swordCollider.enabled = true;
-        transform.localPosition = leftAttackOffset;
-
+        colherCollider.transform.localPosition = new Vector3(-0.3f, 0, 0);
+        colherGFX.transform.localPosition = leftAttackOffset;
 
     }
     public void AttackUp()
     {
         swordCollider.enabled = true;
-        swordCollider.transform.Rotate(0, 0, 90);
-        swordCollider.transform.localPosition = new Vector2(0.01f, 0.066f);
-        spriteRenderer.transform.localPosition = new Vector2(0.01f, 0.066f);
-
+        colherCollider.transform.Rotate(0, 0, 90);
+        transform.localPosition = new Vector3(0f, 0.09f, 0);
 
     }
 
     public void AttackDown()
     {
         swordCollider.enabled = true;
-        swordCollider.transform.Rotate(0, 0, 90);
-        swordCollider.transform.localPosition = new Vector2(0,
-        -0.16f);
-    }
 
+        transform.localPosition = new Vector3(0, -0.16f, 0);
+    }
     public void SpinAttack()
     {
         swordCollider.enabled = true;
         swordCollider.size = new Vector2(swordCollider.size.x * 2, swordCollider.size.y * 2);
-        swordCollider.transform.localPosition = new Vector2(-0.01f, 0);
-        spriteRenderer.transform.localPosition = new Vector2(-0.01f, 0);
-        spriteRenderer.transform.localScale = new Vector2(1.5f, 1.5f);
+        transform.localPosition = new Vector3(-0.01f, 0, 0);
+        transform.localScale = new Vector3(1.5f * regularScale.x, 1.5f * regularScale.y, 1.5f * regularScale.z); ;
 
     }
 
@@ -119,11 +133,22 @@ public class SwordAttack : MonoBehaviour
         swordCollider.enabled = false;
         swordCollider.transform.rotation = Quaternion.identity;
         swordCollider.size = regularBoxColliderSize;
-        spriteRenderer.transform.localScale = new Vector2(1, 1);
-        if (spriteRenderer.flipX)
-            swordCollider.transform.localPosition = rightAttackOffset;
+        colherCollider.transform.localPosition = new Vector2(0, 0);
+        transform.localScale = regularScale;
+        if (playerController.spriteRenderer.flipX)
+            transform.localPosition = rightAttackOffset;
         else
-            swordCollider.transform.localPosition = leftAttackOffset;
+            transform.localPosition = leftAttackOffset;
+    }
+
+    void EndSpinAttack()
+    {
+        swordAnimator.SetBool("spinAttack", false);
+    }
+
+    public void AddSpinTime(float time)
+    {
+        spinTime += time;
     }
 
     public void StartAttack()
@@ -132,7 +157,11 @@ public class SwordAttack : MonoBehaviour
         if (swordAnimator.GetBool("spinAttack"))
         {
             SpinAttack();
-            swordAnimator.SetBool("spinAttack", false);
+            // count down spinTime and then stop attack
+
+            Invoke("EndSwordAttack", spinTime);
+            Invoke("EndSpinAttack", spinTime);
+
         }
         else if (swordAnimator.GetBool("isMovingUp"))
         {
@@ -142,7 +171,7 @@ public class SwordAttack : MonoBehaviour
         {
             AttackDown();
         }
-        else if (spriteRenderer.flipX)
+        else if (playerController.spriteRenderer.flipX)
         {
             AttackLeft();
         }
@@ -157,21 +186,9 @@ public class SwordAttack : MonoBehaviour
     public void EndSwordAttack()
     {
         StopAttack();
+        Debug.Log("EndSwordAttack");
         playerController.unLockMovement();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Sword hit " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            EnemyController enemyController =
-             collision.gameObject.GetComponent<EnemyController>();
 
-            if (enemyController != null)
-            {
-                enemyController.TakeDamage(1);
-            }
-        }
-    }
 }

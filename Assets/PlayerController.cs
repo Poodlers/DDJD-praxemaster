@@ -27,19 +27,11 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public HealthBar healthBar;
 
+    Vector3 originalScale;
     private PlayerWeaponManager playerWeaponManager;
 
     bool canMove = true;
     public int health = 5;
-
-    public enum PlayerMovement
-    {
-        isMovingSideways,
-        isMovingUp,
-        isMovingDown,
-        isIdle
-    }
-    public PlayerMovement playerMovement;
 
     public int Health
     {
@@ -66,16 +58,17 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         healthBar.SetMaxHealth(health);
+
         playerWeaponManager = GetComponent<PlayerWeaponManager>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         model = GetComponentInChildren<SpriteRenderer>().gameObject;
+        originalScale = model.transform.localScale;
 
     }
     private void Defeated()
     {
-        animator.SetTrigger("Defeated");
         animator.enabled = false;
         spriteRenderer.sprite = deadSprite;
         playerWeaponManager.OnDefeated();
@@ -88,41 +81,34 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator BecomeTemporarilyInvincible()
     {
-        Debug.Log("Player turned invincible!");
+
         isInvincible = true;
 
         for (float i = 0; i < invincibilityDurationSeconds; i += invincibilityDeltaTime)
         {
             // Alternate between 0 and 1 scale to simulate flashing
-            if (model.transform.localScale == Vector3.one)
+            if (model.transform.localScale == originalScale)
             {
                 ScaleModelTo(Vector3.zero);
             }
             else
             {
-                ScaleModelTo(Vector3.one);
+                ScaleModelTo(originalScale);
             }
             yield return new WaitForSeconds(invincibilityDeltaTime);
         }
 
-        Debug.Log("Player is no longer invincible!");
-        ScaleModelTo(Vector3.one);
+
+        ScaleModelTo(originalScale);
         isInvincible = false;
     }
 
-
-    // Start is called before the first frame update
 
 
     public void Damaged()
     {
 
         Debug.Log("Player Damaged");
-    }
-    public void PlayerDeath()
-    {
-        spriteRenderer.sprite = deadSprite;
-        canMove = false;
     }
     private bool TryMove(Vector2 direction)
     {
@@ -167,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
             if (movementInput.x != 0)
             {
-                playerMovement = PlayerMovement.isMovingSideways;
+
                 animator.SetBool("isMovingSideways", success);
                 animator.SetBool("isMovingUp", false);
                 animator.SetBool("isMovingDown", false);
@@ -175,14 +161,14 @@ public class PlayerController : MonoBehaviour
             }
             else if (movementInput.y < 0)
             {
-                playerMovement = PlayerMovement.isMovingDown;
+
                 animator.SetBool("isMovingDown", success);
                 animator.SetBool("isMovingUp", false);
                 animator.SetBool("isMovingSideways", false);
             }
             else
             {
-                playerMovement = PlayerMovement.isMovingUp;
+
                 animator.SetBool("isMovingUp", success);
                 animator.SetBool("isMovingDown", false);
                 animator.SetBool("isMovingSideways", false);
@@ -190,7 +176,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            playerMovement = PlayerMovement.isIdle;
+
             animator.SetBool("isMovingSideways", false);
             animator.SetBool("isMovingUp", false);
             animator.SetBool("isMovingDown", false);
@@ -199,22 +185,27 @@ public class PlayerController : MonoBehaviour
         // Set direction of sprite to movement direction
         spriteRenderer.flipX = movementInput.x < 0;
 
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (UpgradeMenu.GameIsPaused) return;
+        movementInput = context.ReadValue<Vector2>();
 
     }
 
-    void OnMove(InputValue value)
+    public void OnFire(InputAction.CallbackContext context)
     {
-        movementInput = value.Get<Vector2>();
+        if (UpgradeMenu.GameIsPaused) return;
+        if (context.started && !isDefeated)
+            playerWeaponManager.OnFire();
     }
 
-    void OnFire(InputValue value)
+    public void OnRightClick(InputAction.CallbackContext context)
     {
-        playerWeaponManager.OnFire();
-    }
-
-    void OnRightClick(InputValue value)
-    {
-        playerWeaponManager.OnRightClick();
+        if (UpgradeMenu.GameIsPaused) return;
+        if (!isDefeated)
+            playerWeaponManager.OnRightClick(context);
 
     }
     public void LockMovement()
@@ -224,7 +215,9 @@ public class PlayerController : MonoBehaviour
 
     public void unLockMovement()
     {
-        canMove = true;
+
+        if (!isDefeated) canMove = true;
+        Debug.Log(canMove);
     }
 
     public void TakeDamage(int damage)

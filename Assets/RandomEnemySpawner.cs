@@ -28,7 +28,7 @@ public class RandomEnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerController.isDefeated) return;
+        if (playerController.isDefeated || UpgradeMenu.GameIsPaused) return;
 
         if (framesCount >= secondsBetweenSpawn * frameRate)
         {
