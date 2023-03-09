@@ -46,7 +46,7 @@ public class ChargeUpBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Coffee chargeup hit " + collision.gameObject.name);
+        //Debug.Log("Coffee chargeup hit " + collision.gameObject.name);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController =

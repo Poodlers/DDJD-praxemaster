@@ -60,9 +60,12 @@ public class SwordAttack : MonoBehaviour
         swordAnimator.SetBool("isMovingSideways", playerController.animator.GetBool("isMovingSideways"));
         swordAnimator.SetBool("isMovingUp", playerController.animator.GetBool("isMovingUp"));
         swordAnimator.SetBool("isMovingDown", playerController.animator.GetBool("isMovingDown"));
-        colherRenderer.flipX = playerController.spriteRenderer.flipX;
-        if (!swordCollider.enabled) transform.localPosition = colherRenderer.flipX ? new Vector3(-0.05f, 0, 0) : new Vector3(0.05f, 0, 0);
 
+        if (!swordCollider.enabled)
+        {
+            colherRenderer.flipX = playerController.spriteRenderer.flipX;
+            transform.localPosition = colherRenderer.flipX ? new Vector3(-0.05f, 0, 0) : new Vector3(0.05f, 0, 0);
+        }
         if (!canDoM2)
         {
             framesM2_Count++;
@@ -122,8 +125,8 @@ public class SwordAttack : MonoBehaviour
     public void SpinAttack()
     {
         swordCollider.enabled = true;
-        swordCollider.size = new Vector2(swordCollider.size.x * 2, swordCollider.size.y * 2);
-        transform.localPosition = new Vector3(-0.01f, 0, 0);
+        swordCollider.size = new Vector2(swordCollider.size.x * 2.5f, swordCollider.size.y * 2.5f);
+        transform.localPosition = new Vector3(-0.1f, 0, 0);
         transform.localScale = new Vector3(1.5f * regularScale.x, 1.5f * regularScale.y, 1.5f * regularScale.z); ;
 
     }
@@ -144,20 +147,21 @@ public class SwordAttack : MonoBehaviour
     void EndSpinAttack()
     {
         swordAnimator.SetBool("spinAttack", false);
+        playerController.unLockMovement();
     }
 
     public void AddSpinTime(float time)
     {
         spinTime += time;
+        upgradeMenu.ResumeGame();
     }
 
     public void StartAttack()
     {
-        playerController.LockMovement();
+        //playerController.LockMovement();
         if (swordAnimator.GetBool("spinAttack"))
         {
             SpinAttack();
-            // count down spinTime and then stop attack
 
             Invoke("EndSwordAttack", spinTime);
             Invoke("EndSpinAttack", spinTime);
@@ -186,7 +190,6 @@ public class SwordAttack : MonoBehaviour
     public void EndSwordAttack()
     {
         StopAttack();
-        Debug.Log("EndSwordAttack");
         playerController.unLockMovement();
     }
 

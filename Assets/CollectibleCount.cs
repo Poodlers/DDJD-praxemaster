@@ -40,15 +40,16 @@ public class CollectibleCount : MonoBehaviour
     }
     void onCollectibleCollected()
     {
-        Debug.Log("Collectible collected");
+
         collectibleCount++;
 
-        UpdateCount();
+
         if (collectibleCount == nextUpgradeThreshold)
         {
             upgradeMenu.PauseGame();
-            nextUpgradeThreshold += 3;
+            nextUpgradeThreshold *= 3;
         }
+        UpdateCount();
 
     }
 }

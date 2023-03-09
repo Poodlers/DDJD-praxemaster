@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpgradeMenu : MonoBehaviour
 {
-    public UpgradeMenu upgradeMenu;
+
     public static bool GameIsPaused = false;
     void Start()
     {

@@ -25,10 +25,8 @@ public class FinoCollectible : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log(onCollectibleCollected.ToString());
-            Debug.Log("Collectible collected");
-            onCollectibleCollected?.Invoke();
 
+            onCollectibleCollected?.Invoke();
             Destroy(gameObject);
         }
     }

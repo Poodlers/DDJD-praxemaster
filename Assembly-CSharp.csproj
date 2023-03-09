@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\tower\Projectiles\Modules\ProjectileMovement.cs" />
      <Compile Include="Assets\Scripts\Timer.cs" />
      <Compile Include="Assets\Scripts\tower\TreeModules\Shootings\TreeShootTarget.cs" />
+     <Compile Include="Assets\EnemyHealthBar.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\Scripts\tower\Projectiles\Modules\ArcMovement.cs" />
      <Compile Include="Assets\Scripts\tower\Interface\ITreeShoot.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets\Scripts\tower\Projectiles\ProjectileBase.cs" />
      <Compile Include="Assets\ProjectileBehavior.cs" />
      <Compile Include="Assets\HealthBar.cs" />
+     <Compile Include="Assets\PlayerHitbox.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

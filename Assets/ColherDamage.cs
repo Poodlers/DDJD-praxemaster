@@ -16,7 +16,7 @@ public class ColherDamage : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Sword hit " + collision.gameObject.name);
+        //Debug.Log("Sword hit " + collision.gameObject.name);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController =

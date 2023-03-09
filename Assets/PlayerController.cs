@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public const float invincibilityDurationSeconds = 1.5f;
     float invincibilityDeltaTime = 0.15f;
 
-    bool isInvincible = false;
+    public bool isInvincible = false;
     public bool isDefeated = false;
     public Sprite deadSprite;
 
@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour
         //if movementInput is not zero, then move the player
         if (movementInput != Vector2.zero)
         {
+
             bool success = TryMove(movementInput);
             if (!success && movementInput.x > 0)
             {
@@ -192,6 +193,7 @@ public class PlayerController : MonoBehaviour
         if (UpgradeMenu.GameIsPaused) return;
         movementInput = context.ReadValue<Vector2>();
 
+
     }
 
     public void OnFire(InputAction.CallbackContext context)
@@ -217,7 +219,7 @@ public class PlayerController : MonoBehaviour
     {
 
         if (!isDefeated) canMove = true;
-        Debug.Log(canMove);
+
     }
 
     public void TakeDamage(int damage)
@@ -227,22 +229,7 @@ public class PlayerController : MonoBehaviour
         healthBar.SetHealth(health);
 
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Player collided with " + collision.gameObject.name);
-        if (isInvincible) return;
 
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            TakeDamage(1);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-
-
-    }
 
 
 }
