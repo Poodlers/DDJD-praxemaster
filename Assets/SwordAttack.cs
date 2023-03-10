@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -126,7 +127,8 @@ public class SwordAttack : MonoBehaviour
     {
         swordCollider.enabled = true;
         swordCollider.size = new Vector2(swordCollider.size.x * 2.5f, swordCollider.size.y * 2.5f);
-        transform.localPosition = new Vector3(-0.1f, 0, 0);
+        swordCollider.transform.localPosition = new Vector3(-0.1f, 0, 0);
+        colherGFX.transform.localPosition = new Vector3(-0.1f, 0, 0);
         transform.localScale = new Vector3(1.5f * regularScale.x, 1.5f * regularScale.y, 1.5f * regularScale.z); ;
 
     }
@@ -134,6 +136,7 @@ public class SwordAttack : MonoBehaviour
     public void StopAttack()
     {
         swordCollider.enabled = false;
+
         swordCollider.transform.rotation = Quaternion.identity;
         swordCollider.size = regularBoxColliderSize;
         colherCollider.transform.localPosition = new Vector2(0, 0);
@@ -144,11 +147,13 @@ public class SwordAttack : MonoBehaviour
             transform.localPosition = leftAttackOffset;
     }
 
-    void EndSpinAttack()
+    public IEnumerator EndSpinAttackAfterTime(float time)
     {
+        yield return new WaitForSeconds(time);
         swordAnimator.SetBool("spinAttack", false);
-        playerController.unLockMovement();
+        EndSwordAttack();
     }
+
 
     public void AddSpinTime(float time)
     {
@@ -156,15 +161,21 @@ public class SwordAttack : MonoBehaviour
         upgradeMenu.ResumeGame();
     }
 
+    public void unlockPlayerMovement()
+    {
+        playerController.unLockMovement();
+    }
+
     public void StartAttack()
     {
         //playerController.LockMovement();
+
         if (swordAnimator.GetBool("spinAttack"))
         {
+            Debug.Log("SpinAttack!");
             SpinAttack();
 
-            Invoke("EndSwordAttack", spinTime);
-            Invoke("EndSpinAttack", spinTime);
+            StartCoroutine(EndSpinAttackAfterTime(spinTime));
 
         }
         else if (swordAnimator.GetBool("isMovingUp"))
@@ -190,7 +201,7 @@ public class SwordAttack : MonoBehaviour
     public void EndSwordAttack()
     {
         StopAttack();
-        playerController.unLockMovement();
+        unlockPlayerMovement();
     }
 
 

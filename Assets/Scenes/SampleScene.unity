@@ -270,6 +270,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1294615339169976948, guid: 050572c84d8f59a4ba441dff50864946, type: 3}
+      propertyPath: invincibilityTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3632346276463655410, guid: 050572c84d8f59a4ba441dff50864946, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -7909,7 +7913,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.5
+          m_FloatArgument: 2
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -10771,6 +10775,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1958416793770411881, guid: 8941a250ee3fa224bbdf2e9b0f6789bf, type: 3}
+      propertyPath: m_Size.x
+      value: 0.25413162
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958416793770411881, guid: 8941a250ee3fa224bbdf2e9b0f6789bf, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.35204196
+      objectReference: {fileID: 0}
     - target: {fileID: 2000894474436684661, guid: 8941a250ee3fa224bbdf2e9b0f6789bf, type: 3}
       propertyPath: upgradeMenu
       value: 
@@ -11027,10 +11039,6 @@ PrefabInstance:
       propertyPath: speed
       value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 3033080085997693882, guid: 5dc161f4ca518be43810242c5d816956, type: 3}
-      propertyPath: amplitude
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc161f4ca518be43810242c5d816956, type: 3}
 --- !u!1001 &8567884791808631225
@@ -11082,6 +11090,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 821221138192052443, guid: 680f806785b9c034598fdb9619e78886, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952771724167420765, guid: 680f806785b9c034598fdb9619e78886, type: 3}
+      propertyPath: invincibilityTime
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7493027227745863290, guid: 680f806785b9c034598fdb9619e78886, type: 3}

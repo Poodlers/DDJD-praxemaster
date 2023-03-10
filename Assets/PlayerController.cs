@@ -190,7 +190,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (UpgradeMenu.GameIsPaused) return;
+        if (UpgradeMenu.GameIsPaused)
+        {
+            movementInput = Vector2.zero;
+            return;
+        }
         movementInput = context.ReadValue<Vector2>();
 
 

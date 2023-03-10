@@ -82,7 +82,8 @@ public class EnemyController : MonoBehaviour
         aiPath.canMove = false;
         transform.rotation = Quaternion.Euler(0, 0, 90);
         capsuleCollider2D.enabled = false;
-        Instantiate(finoPrefab, transform.localPosition, Quaternion.identity);
+
+        Instantiate(finoPrefab, transform.position, Quaternion.identity);
         //destroy self after 3 seconds
         Destroy(gameObject, 3f);
 

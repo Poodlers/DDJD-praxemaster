@@ -18,7 +18,8 @@ public class EnemyHealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        localScale.x = (enemyController.health / enemyController.maxHealth);
+        float scale_x = (enemyController.health / enemyController.maxHealth) < 0 ? 0 : (enemyController.health / enemyController.maxHealth);
+        localScale.x = scale_x;
         transform.localScale = localScale;
 
     }
