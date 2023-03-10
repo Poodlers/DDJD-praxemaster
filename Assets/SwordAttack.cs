@@ -14,7 +14,8 @@ public class SwordAttack : MonoBehaviour
     const int frameRate = 50;
     int framesM2_Count = 0;
     public int M2_cooldown = 3;
-    public float spinTime = 0.5f;
+    float spinAnimationTime;
+    float currentSpinTime;
     bool canDoM2 = true;
     Animator swordAnimator;
     Vector2 rightAttackOffset;
@@ -43,7 +44,21 @@ public class SwordAttack : MonoBehaviour
         leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
         swordAnimator = colherGFX.GetComponent<Animator>();
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        AnimationClip[] clips = swordAnimator.runtimeAnimatorController.animationClips;
 
+        foreach (AnimationClip clip in clips)
+        {
+            switch (clip.name)
+            {
+                case "spin_attack":
+                    spinAnimationTime = clip.length;
+                    currentSpinTime = spinAnimationTime;
+
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void UpgradeColherRange()
@@ -51,7 +66,7 @@ public class SwordAttack : MonoBehaviour
 
         transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         regularScale = transform.localScale;
-        Debug.Log("UpgradeColherRange");
+
         upgradeMenu.ResumeGame();
 
     }
@@ -120,16 +135,16 @@ public class SwordAttack : MonoBehaviour
     public void AttackDown()
     {
         swordCollider.enabled = true;
-
-        transform.localPosition = new Vector3(0, -0.16f, 0);
+        colherCollider.transform.Rotate(0, 0, -90);
+        transform.localPosition = new Vector3(-0.04f, -0.16f, 0);
     }
     public void SpinAttack()
     {
         swordCollider.enabled = true;
-        swordCollider.size = new Vector2(swordCollider.size.x * 2.5f, swordCollider.size.y * 2.5f);
+        swordCollider.size = new Vector2(regularBoxColliderSize.x * 2.5f, regularBoxColliderSize.y * 2.5f);
         swordCollider.transform.localPosition = new Vector3(-0.1f, 0, 0);
         colherGFX.transform.localPosition = new Vector3(-0.1f, 0, 0);
-        transform.localScale = new Vector3(1.5f * regularScale.x, 1.5f * regularScale.y, 1.5f * regularScale.z); ;
+        transform.localScale = new Vector3(1.5f * regularScale.x, 1.5f * regularScale.y, 1.5f * regularScale.z);
 
     }
 
@@ -155,9 +170,11 @@ public class SwordAttack : MonoBehaviour
     }
 
 
-    public void AddSpinTime(float time)
+    public void AddSpinTime()
     {
-        spinTime += time;
+        Debug.Log("spinAnimationTime" + spinAnimationTime);
+        currentSpinTime += spinAnimationTime;
+        Debug.Log("currentSpinTime" + currentSpinTime);
         upgradeMenu.ResumeGame();
     }
 
@@ -172,10 +189,10 @@ public class SwordAttack : MonoBehaviour
 
         if (swordAnimator.GetBool("spinAttack"))
         {
-            Debug.Log("SpinAttack!");
-            SpinAttack();
 
-            StartCoroutine(EndSpinAttackAfterTime(spinTime));
+            SpinAttack();
+            Debug.Log("currentSpiTime" + currentSpinTime);
+            StartCoroutine(EndSpinAttackAfterTime(currentSpinTime - 0.1f));
 
         }
         else if (swordAnimator.GetBool("isMovingUp"))
