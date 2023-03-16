@@ -7,6 +7,7 @@ public class M2_cooldown : MonoBehaviour
 {
     public Slider slider;
     public Image UI_M2;
+    public Image fill;
     public Sprite colher_M2;
     public Sprite coffee_M2;
 
@@ -28,12 +29,12 @@ public class M2_cooldown : MonoBehaviour
         }
     }
 
-    public void SetMaxCooldown(int cooldown)
+    public void SetMaxCooldown(float cooldown)
     {
         slider.maxValue = cooldown;
         slider.value = cooldown;
     }
-    public void SetCoolDown(int cooldown)
+    public void SetCoolDown(float cooldown)
     {
         slider.value = cooldown;
     }

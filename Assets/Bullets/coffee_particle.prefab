@@ -136,4 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7755c1f9a530f14409ae8fe5b4f19298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeMenu: {fileID: 0}
+  burnTicks: 0
+  burnDamage: 0.2
   force: 0

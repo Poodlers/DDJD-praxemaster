@@ -11,9 +11,9 @@ public class SwordAttack : MonoBehaviour
     SpriteRenderer colherRenderer;
     BoxCollider2D swordCollider;
     PlayerController playerController;
-    const int frameRate = 50;
-    int framesM2_Count = 0;
-    public int M2_cooldown = 3;
+
+    public float M2_cooldown = 3f;
+    float M2_cooldownTimer = 0f;
     float spinAnimationTime;
     float currentSpinTime;
     bool canDoM2 = true;
@@ -39,7 +39,7 @@ public class SwordAttack : MonoBehaviour
         m2_cooldown = GameObject.Find("M2_Cooldown").GetComponent<M2_cooldown>();
         regularScale = transform.localScale;
         rightAttackOffset = transform.position;
-        m2_cooldown.SetMaxCooldown(M2_cooldown * frameRate);
+        m2_cooldown.SetMaxCooldown(M2_cooldown);
         regularBoxColliderSize = swordCollider.size;
         leftAttackOffset = new Vector2(-rightAttackOffset.x, rightAttackOffset.y);
         swordAnimator = colherGFX.GetComponent<Animator>();
@@ -64,7 +64,7 @@ public class SwordAttack : MonoBehaviour
     public void UpgradeColherRange()
     {
 
-        transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        transform.localScale = new Vector3(regularScale.x * 1.2f, regularScale.y * 1.2f, regularScale.z * 1.2f);
         regularScale = transform.localScale;
 
         upgradeMenu.ResumeGame();
@@ -84,12 +84,13 @@ public class SwordAttack : MonoBehaviour
         }
         if (!canDoM2)
         {
-            framesM2_Count++;
-            m2_cooldown.SetCoolDown(framesM2_Count);
-            if (framesM2_Count >= frameRate * M2_cooldown)
+            M2_cooldownTimer += Time.deltaTime;
+            m2_cooldown.SetCoolDown(M2_cooldownTimer);
+            if (M2_cooldownTimer >= M2_cooldown)
             {
                 canDoM2 = true;
-                framesM2_Count = 0;
+                M2_cooldownTimer = 0f;
+
             }
         }
     }
@@ -104,7 +105,7 @@ public class SwordAttack : MonoBehaviour
         if (canDoM2)
         {
             canDoM2 = false;
-            m2_cooldown.SetCoolDown(framesM2_Count);
+            m2_cooldown.SetCoolDown(0f);
             swordAnimator.SetBool("spinAttack", true);
         }
 
@@ -141,6 +142,7 @@ public class SwordAttack : MonoBehaviour
     public void SpinAttack()
     {
         swordCollider.enabled = true;
+        swordCollider.size = Vector2.zero;
         swordCollider.size = new Vector2(regularBoxColliderSize.x * 2.5f, regularBoxColliderSize.y * 2.5f);
         swordCollider.transform.localPosition = new Vector3(-0.1f, 0, 0);
         colherGFX.transform.localPosition = new Vector3(-0.1f, 0, 0);
@@ -172,9 +174,9 @@ public class SwordAttack : MonoBehaviour
 
     public void AddSpinTime()
     {
-        Debug.Log("spinAnimationTime" + spinAnimationTime);
+
         currentSpinTime += spinAnimationTime;
-        Debug.Log("currentSpinTime" + currentSpinTime);
+
         upgradeMenu.ResumeGame();
     }
 
@@ -191,7 +193,6 @@ public class SwordAttack : MonoBehaviour
         {
 
             SpinAttack();
-            Debug.Log("currentSpiTime" + currentSpinTime);
             StartCoroutine(EndSpinAttackAfterTime(currentSpinTime - 0.1f));
 
         }

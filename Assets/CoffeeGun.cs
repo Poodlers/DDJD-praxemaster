@@ -11,7 +11,7 @@ public class CoffeeGun : MonoBehaviour
     private Vector3 mousePos;
 
 
-    public float minimumChargeUpTime = 0.5f;
+    public float minimumChargeUpTime = 1f;
     public GameObject bulletPrefab;
 
     public PlayerController playerController;
@@ -19,7 +19,6 @@ public class CoffeeGun : MonoBehaviour
     public Transform playerTrasform;
     public GameObject chargeUpPrefab;
 
-    Vector2 rightAttackOffset;
     private bool canFire = true;
 
     private bool isCharging = false;
@@ -36,9 +35,10 @@ public class CoffeeGun : MonoBehaviour
         playerTrasform = GameObject.Find("Player").GetComponent<Transform>();
     }
 
+
     public void reduceTimeBetweenShots(float amount)
     {
-        Debug.Log("Reducing time between shots");
+
         if (timeBetweenShots > 0.1f)
             timeBetweenShots -= amount;
         upgradeMenu.ResumeGame();
@@ -51,16 +51,26 @@ public class CoffeeGun : MonoBehaviour
         canFire = false;
         GameObject bullet = Instantiate(bulletPrefab, playerTrasform.position, Quaternion.identity);
         bullet.SetActive(true);
+        if (bullet.GetComponent<ProjectileBehavior>().burnTicks > 0)
+        {
+            bullet.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+
 
     }
 
     void handleChargeUp()
     {
-        if (isCharging)
-        {
-            chargeUpTimer += Time.deltaTime;
+        if (!isCharging) return;
 
+        chargeUpTimer += Time.deltaTime;
+        m2_cooldown.SetCoolDown(chargeUpTimer);
+        if (chargeUpTimer >= minimumChargeUpTime)
+        {
+            m2_cooldown.fill.color = new Color(1, 0, 0, 0.5f);
         }
+
+
     }
     public void OnRightClick(InputAction.CallbackContext context)
     {
@@ -70,8 +80,8 @@ public class CoffeeGun : MonoBehaviour
             //make player slow a bit
             playerController.moveSpeed = playerController.moveSpeed / 2;
 
-        }
 
+        }
         if (context.canceled)
         {
             playerController.moveSpeed = playerController.moveSpeed * 2;
@@ -91,6 +101,8 @@ public class CoffeeGun : MonoBehaviour
             }
             isCharging = false;
             chargeUpTimer = 0f;
+            m2_cooldown.SetCoolDown(chargeUpTimer);
+            m2_cooldown.fill.color = new Color(1, 1, 1, 0.5f);
         }
 
 
@@ -101,7 +113,6 @@ public class CoffeeGun : MonoBehaviour
         handleChargeUp();
         mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         //descomentar para rodar a arma do café
-
 
         if (!canFire)
         {

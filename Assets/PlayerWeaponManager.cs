@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerWeaponManager : MonoBehaviour
 {
@@ -9,13 +8,27 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField] private CoffeeGun cofffeWeapon;
     [SerializeField] private SwordAttack colher;
 
+    [SerializeField] private Sprite coffeeSelected;
+    [SerializeField] private Sprite coffeeUnSelected;
+
+    [SerializeField] private Sprite colherUnSelected;
+
+    [SerializeField] private Sprite colherSelected;
+
     M2_cooldown m2_cooldown;
+
+    GameObject coffeeUI;
+    GameObject colherUI;
+
     private int weaponID = 1;
 
     void Start()
     {
         m2_cooldown = GameObject.Find("M2_Cooldown").GetComponent<M2_cooldown>();
-
+        coffeeUI = GameObject.Find("CoffeeUI_image");
+        colherUI = GameObject.Find("ColherUI_image");
+        coffeeUI.GetComponent<Image>().sprite = coffeeUnSelected;
+        colherUI.GetComponent<Image>().sprite = colherSelected;
     }
 
     public void OnFire()
@@ -54,11 +67,19 @@ public class PlayerWeaponManager : MonoBehaviour
         {
             SetWeapon(0);
             m2_cooldown.switchSprites(0);
+            m2_cooldown.SetMaxCooldown(cofffeWeapon.minimumChargeUpTime);
+            coffeeUI.GetComponent<Image>().sprite = coffeeSelected;
+            colherUI.GetComponent<Image>().sprite = colherUnSelected;
+
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             SetWeapon(1);
             m2_cooldown.switchSprites(1);
+
+            m2_cooldown.SetMaxCooldown(colher.M2_cooldown);
+            coffeeUI.GetComponent<Image>().sprite = coffeeUnSelected;
+            colherUI.GetComponent<Image>().sprite = colherSelected;
         }
 
     }

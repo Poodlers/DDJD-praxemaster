@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8099885925902275861}
   - component: {fileID: 1922120498160016325}
   - component: {fileID: 1405369764531517716}
+  - component: {fileID: 1634869111588639568}
   m_Layer: 0
   m_Name: ColherGFX
   m_TagString: Untagged
@@ -127,6 +128,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1634869111588639568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507069945423902620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7088f455e20aa84aac419762e5e97f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M2_cooldown: 3
+  upgradeMenu: {fileID: 0}
 --- !u!1 &3968869095544873204
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1.2
+  restartButton: {fileID: 0}
   collisionOffset: 0.02
   movementFilter:
     useTriggers: 0
@@ -367,6 +383,7 @@ MonoBehaviour:
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
+  isInvincible: 0
   isDefeated: 0
   deadSprite: {fileID: -491567066, guid: e53088a6ab3c72e4db83e087fd498f11, type: 3}
   spriteRenderer: {fileID: 0}
@@ -428,6 +445,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cofffeWeapon: {fileID: 5595953591004460508}
   colher: {fileID: 0}
+  coffeeSelected: {fileID: 21300000, guid: 902e7539527428b4daf3fe8129676dc8, type: 3}
+  coffeeUnSelected: {fileID: 21300000, guid: 95b4e58491f369a4a9784725f4946df3, type: 3}
+  colherUnSelected: {fileID: -1187690411, guid: 0e2aff806fb17f14f957b8b43bc8d5b1, type: 3}
+  colherSelected: {fileID: 21300000, guid: 09e43bc957037ad428cd66b04b65cf36, type: 3}
 --- !u!1 &4026045246998795583
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +600,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   M2_cooldown: 3
-  spinTime: 0.5
   upgradeMenu: {fileID: 0}
 --- !u!1 &4109182822502136944
 GameObject:
@@ -628,6 +648,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colherDamage: 1
   upgradeMenu: {fileID: 0}
+  knockbackForce: 0.5
 --- !u!61 &1958416793770411881
 BoxCollider2D:
   m_ObjectHideFlags: 0

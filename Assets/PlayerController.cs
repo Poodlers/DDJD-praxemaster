@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,19 +7,18 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 1f;
 
+    public GameObject restartButton;
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
     List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
     Vector2 movementInput;
     Rigidbody2D rb;
 
-
     public const float invincibilityDurationSeconds = 1.5f;
     float invincibilityDeltaTime = 0.15f;
 
     public bool isInvincible = false;
     public bool isDefeated = false;
-    public Sprite deadSprite;
 
     public SpriteRenderer spriteRenderer;
     private GameObject model;
@@ -44,8 +42,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Damaged();
-
                 StartCoroutine(BecomeTemporarilyInvincible());
             }
         }
@@ -69,9 +65,11 @@ public class PlayerController : MonoBehaviour
     }
     private void Defeated()
     {
+        if (isDefeated) return;
         animator.enabled = false;
-        spriteRenderer.sprite = deadSprite;
+        transform.Rotate(0, 0, 90);
         playerWeaponManager.OnDefeated();
+        restartButton.SetActive(true);
         canMove = false;
         isDefeated = true;
     }
@@ -105,11 +103,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void Damaged()
-    {
-
-        Debug.Log("Player Damaged");
-    }
     private bool TryMove(Vector2 direction)
     {
 
@@ -135,7 +128,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (!canMove) return;
+        if (!canMove || isDefeated) return;
         //if movementInput is not zero, then move the player
         if (movementInput != Vector2.zero)
         {

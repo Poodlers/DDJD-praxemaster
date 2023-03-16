@@ -37,8 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\UpgradeMenu.cs" />
+     <Compile Include="Assets\Restart.cs" />
      <Compile Include="Assets\CoffeeGun.cs" />
      <Compile Include="Assets\ChargeUpBehavior.cs" />
+     <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\Scripts\tower\Projectiles\ProjectileArcTarget.cs" />
      <Compile Include="Assets\Scripts\SpawnGameOBJ.cs" />
      <Compile Include="Assets\Scripts\tower\Interface\IFireRater.cs" />

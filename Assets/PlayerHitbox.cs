@@ -15,7 +15,7 @@ public class PlayerHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Player collided with " + collision.gameObject.name);
+
         if (playerController.isInvincible) return;
 
         if (collision.gameObject.CompareTag("Enemy"))

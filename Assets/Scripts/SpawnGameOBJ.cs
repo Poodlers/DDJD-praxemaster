@@ -10,7 +10,7 @@ namespace Assets.Scripts.Enemies.EnemyAI
         private float lifeTime = 2.0f;
 
         public GameObject ToSpawn = null;
-       
+
         public void ChangeGameobject(GameObject obj)
         {
             ToSpawn = obj;
@@ -18,13 +18,15 @@ namespace Assets.Scripts.Enemies.EnemyAI
 
         public void Spawn()
         {
-           
-             GameObject ga = Instantiate(ToSpawn, transform.position, Quaternion.identity);
+
+            GameObject ga = Instantiate(ToSpawn, transform.position, Quaternion.identity);
+            BoxCollider2D box = ga.GetComponent<BoxCollider2D>();
+            box.isTrigger = false;
             Destroy(ga, lifeTime);
         }
 
-        
-           
-        
+
+
+
     }
 }
