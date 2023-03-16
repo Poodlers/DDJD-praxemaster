@@ -1107,7 +1107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - {fileID: 5513079986234676697, guid: 050572c84d8f59a4ba441dff50864946, type: 3}
-  - {fileID: 1952438187}
+  - {fileID: 8471089471611985136, guid: 680f806785b9c034598fdb9619e78886, type: 3}
   enemyRarity:
   - 10
   - 1
@@ -1115,7 +1115,7 @@ MonoBehaviour:
   maximumY: 2
   minimumX: -3.2
   maximumX: 3.2
-  secondsBetweenSpawn: 5
+  secondsBetweenSpawn: 2
 --- !u!4 &366071886
 Transform:
   m_ObjectHideFlags: 0
@@ -17375,11 +17375,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
---- !u!1 &1952438187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8471089471611985136, guid: 680f806785b9c034598fdb9619e78886, type: 3}
-  m_PrefabInstance: {fileID: 8567884791808631225}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1973779623
 GameObject:
   m_ObjectHideFlags: 0
